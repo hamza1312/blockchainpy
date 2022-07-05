@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 
 import requests
 from flask import Flask, escape, request,jsonify
-from yaml import parse
+
 # PART 1 -- Defining the BLOCKCHAIN
 class Blockchain:
     def __init__(self):
