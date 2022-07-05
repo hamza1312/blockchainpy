@@ -1,17 +1,13 @@
-from base64 import encode
+
 import datetime
-from decimal import DecimalException
 import hashlib
 import json
-from msilib.schema import Error
-from netrc import netrc
 from urllib import response
 from uuid import uuid4
 from urllib.parse import urlparse
-from numpy import block
-import requests
 
-from flask import Flask, escape, jsonify
+import requests
+from flask import Flask, escape, request,jsonify
 from yaml import parse
 # PART 1 -- Defining the BLOCKCHAIN
 class Blockchain:
@@ -126,17 +122,18 @@ def is_valid():
     return jsonify(response), 200
 @app.route('/add_transaction', methods=['POST'])
 def add_transaction():
-    json = requests.get.json()
+    json = request.get_json()
     transactions_keys =['sender', 'reciever', 'amount']
     if not all (key in json for key in transactions_keys):
         return 'Some Elements in the transaction are missing.',400 
     index = blockchain.add_transaction(json['sender'], json['reciever'], json['amount'])
     response = {'message': f'This transaction will be added to block {index}'}
     return jsonify(response), 201
-app.run(host='0.0.0.0',port=1312)
+
 @app.route('/connect_node', methods=['POST'])
 def connect_node():
-    json = requests.get.json()
+    json = request.get_json()
+
     nodes = json.get('nodes')
     if nodes is None:
         return 'No Nodes...',400
@@ -152,3 +149,4 @@ def replace_chain():
     else:
         response = {'message': "All good the chain is the largest one.", 'chain': blockchain.chain}
     return jsonify(response), 200
+app.run(host='0.0.0.0',port=1312)
